@@ -1,0 +1,13 @@
+import mongoose from 'mongoose';
+import { DB_URL } from './../config/index.js';
+const connectDB = async() => {
+    try {
+        mongoose.set('strictQuery', false);
+        const conn = await mongoose.connect(DB_URL);
+        console.log(`MongoDB Connected: ${conn.connection.host}`);
+    } catch (error) {
+        console.log(error)
+        process.exit(1);
+    }
+};
+export { connectDB };
