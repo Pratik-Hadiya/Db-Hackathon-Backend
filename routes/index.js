@@ -8,7 +8,7 @@ router.post("/login",loginController.login);
 router.post("/register",loginController.register);
 // router.post("/fakedata", tradeController.insertdata);
 router.get("/getsecurities", securityController.getsecurities);
-router.get("/getsecuritiesbyfilter", securityController.getsecuritiesbyfilter);
+router.post("/getsecuritiesbyfilter", securityController.getsecuritiesbyfilter);
 router.get("/getsecuritybyid", securityController.getsecuritybyid);
 router.put("/updatetradestatus", tradeController.updatetradestatus);
 

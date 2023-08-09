@@ -38,8 +38,6 @@ const tradeController = {
                 securities = await SecuritySchema.find(filter, 'security_id isin cusip issuer maturity_date coupon type facevalue').sort({ maturity_date: 1 });
             }
 
-            
-
             return res.status(200).json({ data: securities });
 
         } catch (err) {
@@ -48,19 +46,25 @@ const tradeController = {
     },
     async getsecuritiesbyfilter(req, res, next) {
         try {
-            const { startDate, endDate, bondtype } = req.query;
+            const { startDate, endDate, bondtype } = req.body;
 
             let filter = {};
 
-            if (startDate && endDate) {
+            if (startDate !== "") {
+
+
                 // Handle startDate and endDate filter
+
+
                 filter.maturity_date = {
                     $gte: new Date(startDate).toISOString().split('T')[0],
                     $lte: new Date(endDate).toISOString().split('T')[0]
                 };
             }
 
-            if(bondtype === '0') {
+            if(bondtype === "") {
+
+            } else if(bondtype === '0') {
 
             } else if (bondtype === '1') {
                 filter.type = 'Callable Bond';
