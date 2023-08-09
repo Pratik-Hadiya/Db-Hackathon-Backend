@@ -62,9 +62,7 @@ const tradeController = {
                 filter.type = 'Traditional Bond';
             } else if (bondtype === '4') {
                 filter.type = 'Fixed Rate Bond';
-            } else if (bondtype === '5') {
-                filter.type = 'Mortgage Bond';
-            } 
+            }
 
             console.log(filter);
 
@@ -72,7 +70,13 @@ const tradeController = {
 
             const securities = await SecuritySchema.find(filter, 'security_id isin cusip issuer maturity_date coupon type facevalue');
 
-            return res.status(200).json({ data: securities });
+            const currentDate = new Date();
+
+            const maturedSecurities = securities.filter(security => security.maturity_date < currentDate.toISOString().split('T')[0]);
+            const unmaturedSecurities = securities.filter(security => security.maturity_date >= currentDate.toISOString().split('T')[0]);
+
+
+            return res.status(200).json({ matured: maturedSecurities, unmatured: unmaturedSecurities });
 
         } catch (error) {
             return res.status(500).json({ err: error, erro: "Internal Server Error!" });
