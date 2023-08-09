@@ -38,9 +38,9 @@ const tradeController = {
             return res.status(500).json({ err, error: "Internal Server Error!" });
         }
     },
-    async getsecuritiesbydates(req, res, next) {
+    async getsecuritiesbyfilter(req, res, next) {
         try {
-            const { startDate, endDate } = req.query;
+            const { startDate, endDate, bondtype } = req.query;
 
             let filter = {};
 
@@ -51,6 +51,20 @@ const tradeController = {
                     $lte: new Date(endDate).toISOString().split('T')[0]
                 };
             }
+
+            if(bondtype === '0') {
+
+            } else if (bondtype === '1') {
+                filter.type = 'Callable Bond';
+            } else if (bondtype === '2') {
+                filter.type = 'Mortgage Bond';
+            } else if (bondtype === '3') {
+                filter.type = 'Traditional Bond';
+            } else if (bondtype === '4') {
+                filter.type = 'Fixed Rate Bond';
+            } else if (bondtype === '5') {
+                filter.type = 'Mortgage Bond';
+            } 
 
             console.log(filter);
 
@@ -72,44 +86,6 @@ const tradeController = {
 
             return res.status(200).json({ data });
 
-
-        } catch (error) {
-            console.log(error);
-            return res.status(500).json({ error: "Internal Server Error!" })
-        }
-    },
-    async updatetradestatus(req, res, next) {
-        try {
-            const { securityId, tradeId, newStatus } = req.body;
-
-            let security = await SecuritySchema.findOne({ "security_id": securityId });
-
-            if (!security) {
-                return res.status(404).json({ error: "No Security Found!" })
-            }
-
-            // console.log(security.trades);
-            var flag = 0;
-            console.log(tradeId);
-            for (var i = 0; i < security.trades.length; i++) {
-                console.log(security.trades[i]);
-                console.log(security.trades[i]['id']);
-                if (security.trades[i].id === tradeId) {
-
-                    flag = 1;
-                    // Update the status of the trade
-                    security.trades[i].status = newStatus;
-
-                    // Save the updated Security document
-                    await security.save();
-                }
-            }
-
-            if(flag === 0){
-                return res.status(404).json({ error: 'Trade not found' });
-            }
-
-            return res.status(200).json({ message: "Trade Status Updated." });
 
         } catch (error) {
             console.log(error);

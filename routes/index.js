@@ -6,11 +6,11 @@ const router = express.Router();
 
 router.post("/login",loginController.login);
 router.post("/register",loginController.register);
-router.post("/fakedata", tradeController.insertdata);
+// router.post("/fakedata", tradeController.insertdata);
 router.get("/getsecurities", securityController.getsecurities);
-router.get("/getsecuritiesbydates", securityController.getsecuritiesbydates);
+router.get("/getsecuritiesbyfilter", securityController.getsecuritiesbyfilter);
 router.get("/getsecuritybyid", securityController.getsecuritybyid);
-router.put("/updatetradestatus", securityController.updatetradestatus);
+router.put("/updatetradestatus", tradeController.updatetradestatus);
 
 // router.get("/update", securityController.update);
 
