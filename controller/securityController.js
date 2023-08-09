@@ -27,7 +27,7 @@ const tradeController = {
                     $gt: oneMonthLater.toISOString().split('T')[0] // Only YYYY-MM-DD part
                 };
 
-                securities = await SecuritySchema.find(filter, 'security_id isin cusip issuer maturity_date coupon type facevalue').sort({ maturity_date: 1 });
+                securities = await SecuritySchema.find(filter, 'security_id isin cusip issuer maturity_date coupon type facevalue trades').sort({ maturity_date: 1 });
 
 
             } else if (maturity === '1') {
@@ -35,7 +35,7 @@ const tradeController = {
                     $lte: currentDate.toISOString().split('T')[0] // Only YYYY-MM-DD part
                 };
 
-                securities = await SecuritySchema.find(filter, 'security_id isin cusip issuer maturity_date coupon type facevalue').sort({ maturity_date: 1 });
+                securities = await SecuritySchema.find(filter, 'security_id isin cusip issuer maturity_date coupon type facevalue trades').sort({ maturity_date: 1 });
             }
 
             return res.status(200).json({ data: securities });
@@ -80,7 +80,7 @@ const tradeController = {
 
 
 
-            const securities = await SecuritySchema.find(filter, 'security_id isin cusip issuer maturity_date coupon type facevalue').sort({ maturity_date: 1 });
+            const securities = await SecuritySchema.find(filter, 'security_id isin cusip issuer maturity_date coupon type facevalue trades').sort({ maturity_date: 1 });
 
             const currentDate = new Date();
 
