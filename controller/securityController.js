@@ -16,6 +16,8 @@ const tradeController = {
 
             const currentDate = new Date();
 
+            var securities;
+
             let filter = {};
             if (maturity === '0') {
                 const oneMonthLater = new Date();
@@ -24,13 +26,19 @@ const tradeController = {
                 filter.maturity_date = {
                     $gt: oneMonthLater.toISOString().split('T')[0] // Only YYYY-MM-DD part
                 };
+
+                securities = await SecuritySchema.find(filter, 'security_id isin cusip issuer maturity_date coupon type facevalue').sort({ maturity_date: 1 });
+
+
             } else if (maturity === '1') {
                 filter.maturity_date = {
                     $lte: currentDate.toISOString().split('T')[0] // Only YYYY-MM-DD part
                 };
+
+                securities = await SecuritySchema.find(filter, 'security_id isin cusip issuer maturity_date coupon type facevalue').sort({ maturity_date: 1 });
             }
 
-            const securities = await SecuritySchema.find(filter, 'security_id isin cusip issuer maturity_date coupon type facevalue');
+            
 
             return res.status(200).json({ data: securities });
 
@@ -62,13 +70,13 @@ const tradeController = {
                 filter.type = 'Traditional Bond';
             } else if (bondtype === '4') {
                 filter.type = 'Fixed Rate Bond';
-            }
+            }   
 
-            console.log(filter);
+            // console.log(filter);
 
 
 
-            const securities = await SecuritySchema.find(filter, 'security_id isin cusip issuer maturity_date coupon type facevalue');
+            const securities = await SecuritySchema.find(filter, 'security_id isin cusip issuer maturity_date coupon type facevalue').sort({ maturity_date: 1 });
 
             const currentDate = new Date();
 
